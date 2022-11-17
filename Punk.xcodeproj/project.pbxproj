@@ -18,6 +18,8 @@
 		6907253829267198009B1AE8 /* RestClientService.swift in Sources */ = {isa = PBXBuildFile; fileRef = 6907253729267198009B1AE8 /* RestClientService.swift */; };
 		6907253A2926741E009B1AE8 /* BeerFinderService.swift in Sources */ = {isa = PBXBuildFile; fileRef = 690725392926741E009B1AE8 /* BeerFinderService.swift */; };
 		69072540292685C9009B1AE8 /* BeerFinderViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 6907253F292685C9009B1AE8 /* BeerFinderViewController.swift */; };
+		690725442926A532009B1AE8 /* BeersView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 690725432926A532009B1AE8 /* BeersView.swift */; };
+		690725472926AFCB009B1AE8 /* UIImageView+Additions.swift in Sources */ = {isa = PBXBuildFile; fileRef = 690725462926AFCB009B1AE8 /* UIImageView+Additions.swift */; };
 		CC50FB7D3BCB7A8F2891DD3B /* Pods_Punk.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = C6026FAFD85489DDD0045EB2 /* Pods_Punk.framework */; };
 /* End PBXBuildFile section */
 
@@ -36,6 +38,8 @@
 		6907253729267198009B1AE8 /* RestClientService.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = RestClientService.swift; sourceTree = "<group>"; };
 		690725392926741E009B1AE8 /* BeerFinderService.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = BeerFinderService.swift; sourceTree = "<group>"; };
 		6907253F292685C9009B1AE8 /* BeerFinderViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = BeerFinderViewController.swift; sourceTree = "<group>"; };
+		690725432926A532009B1AE8 /* BeersView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = BeersView.swift; sourceTree = "<group>"; };
+		690725462926AFCB009B1AE8 /* UIImageView+Additions.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = "UIImageView+Additions.swift"; sourceTree = "<group>"; };
 		C6026FAFD85489DDD0045EB2 /* Pods_Punk.framework */ = {isa = PBXFileReference; explicitFileType = wrapper.framework; includeInIndex = 0; path = Pods_Punk.framework; sourceTree = BUILT_PRODUCTS_DIR; };
 		CCEC581DD7E2818CC72F5F09 /* Pods-Punk.release.xcconfig */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = text.xcconfig; name = "Pods-Punk.release.xcconfig"; path = "Target Support Files/Pods-Punk/Pods-Punk.release.xcconfig"; sourceTree = "<group>"; };
 /* End PBXFileReference section */
@@ -81,6 +85,8 @@
 		6907251A29266CE5009B1AE8 /* Punk */ = {
 			isa = PBXGroup;
 			children = (
+				690725452926AF4E009B1AE8 /* Extensions */,
+				690725422926A50F009B1AE8 /* Views */,
 				6907253E29267A93009B1AE8 /* ViewControllers */,
 				690725342926701D009B1AE8 /* Services */,
 				6907252F29266DB4009B1AE8 /* Models */,
@@ -119,6 +125,22 @@
 				6907253F292685C9009B1AE8 /* BeerFinderViewController.swift */,
 			);
 			path = ViewControllers;
+			sourceTree = "<group>";
+		};
+		690725422926A50F009B1AE8 /* Views */ = {
+			isa = PBXGroup;
+			children = (
+				690725432926A532009B1AE8 /* BeersView.swift */,
+			);
+			path = Views;
+			sourceTree = "<group>";
+		};
+		690725452926AF4E009B1AE8 /* Extensions */ = {
+			isa = PBXGroup;
+			children = (
+				690725462926AFCB009B1AE8 /* UIImageView+Additions.swift */,
+			);
+			path = Extensions;
 			sourceTree = "<group>";
 		};
 		BDF2E72A77C0DBE504D64ED2 /* Pods */ = {
@@ -244,11 +266,13 @@
 			isa = PBXSourcesBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
+				690725442926A532009B1AE8 /* BeersView.swift in Sources */,
 				6907252029266CE5009B1AE8 /* ViewController.swift in Sources */,
 				69072540292685C9009B1AE8 /* BeerFinderViewController.swift in Sources */,
 				6907253829267198009B1AE8 /* RestClientService.swift in Sources */,
 				6907251C29266CE5009B1AE8 /* AppDelegate.swift in Sources */,
 				6907253329266FA7009B1AE8 /* BeerList.swift in Sources */,
+				690725472926AFCB009B1AE8 /* UIImageView+Additions.swift in Sources */,
 				6907251E29266CE5009B1AE8 /* SceneDelegate.swift in Sources */,
 				6907253A2926741E009B1AE8 /* BeerFinderService.swift in Sources */,
 				6907253629267048009B1AE8 /* Endpoints.swift in Sources */,
