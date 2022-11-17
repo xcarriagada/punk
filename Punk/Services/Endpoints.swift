@@ -10,5 +10,5 @@ import Foundation
 struct Endpoints {
     static let basePath: String = "https://api.punkapi.com/v2/"
     
-    static let getBeers = "beers"
+    static let beerFinder = "beers"
 }
