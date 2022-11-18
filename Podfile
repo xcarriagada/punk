@@ -7,5 +7,5 @@ target 'Punk' do
 
   pod 'Alamofire'
   pod 'AlamofireImage'
-
+  pod 'lottie-ios'
 end
