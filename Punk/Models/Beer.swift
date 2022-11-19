@@ -13,8 +13,12 @@ struct Beer: Decodable {
     let tagline: String?
     let description: String?
     let image: String?
+    let abv: Double?
     let ibu: Double?
     let ebc: Double?
+    let ingredients: Ingredients?
+    let foodPairing: [String]?
+    let tips: String?
     
     enum CodingKeys: String, CodingKey {
         case id
@@ -22,7 +26,11 @@ struct Beer: Decodable {
         case tagline
         case description
         case image = "image_url"
+        case abv
         case ibu
         case ebc
+        case ingredients
+        case foodPairing = "food_pairing"
+        case tips = "brewers_tips"
     }
 }

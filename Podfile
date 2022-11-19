@@ -8,4 +8,9 @@ target 'Punk' do
   pod 'Alamofire'
   pod 'AlamofireImage'
   pod 'lottie-ios'
+  
+  target 'PunkTests' do
+    pod 'Quick', '3.0.0'
+    pod 'Nimble', '9.2.1'
+  end
 end

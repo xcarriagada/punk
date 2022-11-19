@@ -13,8 +13,6 @@ class LoadingView: UIView {
     
     lazy var messageLabel: UILabel = {
         let label = UILabel()
-        label.font = UIFont.boldSystemFont(ofSize: 14)
-        label.textColor = .black
         label.textAlignment = .center
         label.numberOfLines = 1
         return label
@@ -31,7 +29,7 @@ class LoadingView: UIView {
     override init(frame: CGRect) {
         super.init(frame: frame)
         
-        setupView()
+        setup()
         setupConstraints()
     }
     
@@ -39,12 +37,27 @@ class LoadingView: UIView {
         fatalError("init(coder:) has not been implemented")
     }
     
-    private func setupView() {
+    func update(withMessage message: String) {
+        messageLabel.apply(text: message, withStyle: .h3)
+    }
+    
+    func startLoading() {
+        lottieAnimationView.play()
+    }
+    
+    func stopLoading() {
+        lottieAnimationView.stop()
+    }
+}
+
+extension LoadingView: ViewSetupable {
+    
+    func setup() {
         addSubview(messageLabel)
         addSubview(lottieAnimationView)
     }
     
-    private func setupConstraints() {
+    func setupConstraints() {
         setupMessageLabelConstraints()
         setupLottieAnimationView()
     }
@@ -62,23 +75,11 @@ class LoadingView: UIView {
     private func setupLottieAnimationView() {
         lottieAnimationView.translatesAutoresizingMaskIntoConstraints = false
         NSLayoutConstraint.activate([
-            lottieAnimationView.bottomAnchor.constraint(equalTo: messageLabel.topAnchor, constant: 60),
+            lottieAnimationView.bottomAnchor.constraint(equalTo: messageLabel.topAnchor),
             lottieAnimationView.centerXAnchor.constraint(equalTo: centerXAnchor),
-            lottieAnimationView.widthAnchor.constraint(equalToConstant: 300),
-            lottieAnimationView.heightAnchor.constraint(equalToConstant: 300)
+            lottieAnimationView.widthAnchor.constraint(equalToConstant: 150),
+            lottieAnimationView.heightAnchor.constraint(equalToConstant: 150)
         ])
-    }
-    
-    func startLoading() {
-        lottieAnimationView.play()
-    }
-    
-    func stopLoading() {
-        lottieAnimationView.stop()
-    }
-    
-    func updateView(withMessage message: String) {
-        messageLabel.text = message
     }
 }
 

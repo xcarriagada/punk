@@ -3,23 +3,31 @@ PODS:
   - AlamofireImage (4.2.0):
     - Alamofire (~> 5.4)
   - lottie-ios (3.5.0)
+  - Nimble (9.2.1)
+  - Quick (3.0.0)
 
 DEPENDENCIES:
   - Alamofire
   - AlamofireImage
   - lottie-ios
+  - Nimble (= 9.2.1)
+  - Quick (= 3.0.0)
 
 SPEC REPOS:
   trunk:
     - Alamofire
     - AlamofireImage
     - lottie-ios
+    - Nimble
+    - Quick
 
 SPEC CHECKSUMS:
   Alamofire: d368e1ff8a298e6dde360e35a3e68e6c610e7204
   AlamofireImage: 34a2d90b0e5fe6a5605f85ae4b7b01e784c60192
   lottie-ios: c55158d67d0629a260625cc2ded2052b829e3c3e
+  Nimble: e7e615c0335ee4bf5b0d786685451e62746117d5
+  Quick: 6d9559f40647bc4d510103842ef2fdd882d753e2
 
-PODFILE CHECKSUM: 36d94b2c67a73f848c4ecc28121e151e55b594e3
+PODFILE CHECKSUM: d64b05e1fb92b52bde19e4b2091d2cbde9524873
 
 COCOAPODS: 1.11.3

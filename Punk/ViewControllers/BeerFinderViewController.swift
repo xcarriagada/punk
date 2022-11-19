@@ -40,20 +40,23 @@ class BeerFinderViewController: UIViewController {
         viewModel.noResultFound = { [weak self] in
             guard let self = self else { return }
             self.tableView.reloadData()
-            //TODO: Mostrar pantalla de no hay resultados para la busqueda
         }
         
         viewModel.showError = { [weak self] in
             guard let self = self else { return }
-            //TODO: Mostrar pantalla de error
+            self.tableView.reloadData()
         }
-
-        setupView()
+        
+        setup()
         setupConstraints()
     }
+}
+
+extension BeerFinderViewController: ViewSetupable {
     
-    private func setupView() {
+    func setup() {
         view.backgroundColor = .white
+        title = "Punk"
         
         view.addSubview(searchBar)
         view.addSubview(tableView)
@@ -64,7 +67,7 @@ class BeerFinderViewController: UIViewController {
         tableView.dataSource = self
     }
     
-    private func setupConstraints() {
+    func setupConstraints() {
         setupSearchBarConstraints()
         setupTableViewConstraints()
     }
@@ -92,7 +95,10 @@ class BeerFinderViewController: UIViewController {
 extension BeerFinderViewController: UISearchBarDelegate {
     
     func searchBar(_ searchBar: UISearchBar, textDidChange searchText: String) {
-        guard !searchText.isEmpty else { return }
+        guard !searchText.isEmpty else {
+            viewModel.clean()
+            return
+        }
         viewModel.searchBeerFor(food: searchText)
     }
 }
@@ -105,11 +111,6 @@ extension BeerFinderViewController: UITableViewDelegate, UITableViewDataSource {
     
     func tableView(_ tableView: UITableView, cellForRowAt indexPath: IndexPath) -> UITableViewCell {
         let cell = UITableViewCell(style: .subtitle, reuseIdentifier: "")
-        
-        if let url = URL(string: viewModel.getImagePathForBeer(withIndex: indexPath.row)) {
-            cell.imageView?.contentMode = .scaleAspectFit
-            cell.imageView?.downloaded(fromURL: url)
-        }
         
         if let name = viewModel.getNameForBeer(withIndex: indexPath.row), !name.isEmpty {
             cell.textLabel?.text = name
@@ -127,3 +128,6 @@ extension BeerFinderViewController: UITableViewDelegate, UITableViewDataSource {
         navigationController?.pushViewController(BeerDetailViewController(withViewModel: BeerDetailViewModel(withBeerId: id)), animated: true)
     }
 }
+
+
+

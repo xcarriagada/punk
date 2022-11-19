@@ -36,6 +36,7 @@ class BeerFinderViewModel {
             self.beers = model
         }, onError: { [weak self] in
             guard let self = self else { return }
+            self.beers = nil
             self.showError?()
         })
     }
@@ -44,15 +45,15 @@ class BeerFinderViewModel {
         return beers?[index].id
     }
     
-    func getImagePathForBeer(withIndex index: Int) -> String {
-        return beers?[index].image ?? ""
-    }
-    
     func getNameForBeer(withIndex index: Int) -> String? {
         return beers?[index].name
     }
     
     func getTaglineForBeer(withIndex index: Int) -> String? {
         return beers?[index].tagline
+    }
+    
+    func clean() {
+        beers = nil
     }
 }

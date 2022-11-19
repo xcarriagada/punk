@@ -11,8 +11,10 @@ class BeerDetailViewController: UIViewController {
     
     var viewModel: BeerDetailViewModel
     
+    lazy var loadingView: LoadingView = LoadingView()
+    lazy var errorView: ErrorView = ErrorView()
     lazy var beerDetailView: BeerDetailView = BeerDetailView()
-
+    
     init(withViewModel viewModel: BeerDetailViewModel) {
         self.viewModel = viewModel
         super.init(nibName: nil, bundle: nil)
@@ -25,28 +27,93 @@ class BeerDetailViewController: UIViewController {
     override func viewDidLoad() {
         super.viewDidLoad()
         
-        viewModel.fetchDataIsFinished = { [weak self] in
-            guard let self = self else { return }
-            self.showBeerDetailView()
-        }
-        
         viewModel.showError = { [weak self] in
             guard let self = self else { return }
+            self.loadingView.stopLoading()
             self.showErrorView()
+        }
+        
+        viewModel.fetchDataIsFinished = { [weak self] in
+            guard let self = self else { return }
+            self.loadingView.stopLoading()
+            self.showBeerDetailView()
         }
         
         viewModel.fetchData()
         
-        setupView()
+        setup()
         setupConstraints()
-    }
-    
-    private func setupView() {
-        view.backgroundColor = .white
-    }
-    
-    private func setupConstraints() {
         
+        updateLoadingView()
+    }
+    
+    private func updateLoadingView() {
+        loadingView.update(withMessage: "Loading...")
+        loadingView.startLoading()
+    }
+    
+    private func showErrorView() {
+        DispatchQueue.main.async { [weak self] in
+            guard let self = self else { return }
+            self.view.removeAllSubviews()
+            self.view.addSubview(self.errorView)
+            self.setupErrorViewConstraints()
+            
+            self.errorView.startAnimation()
+        }
+    }
+    
+    private func showBeerDetailView() {
+        DispatchQueue.main.async { [weak self] in
+            guard let self = self else { return }
+            self.view.removeAllSubviews()
+            self.view.addSubview(self.beerDetailView)
+            self.setupBeerDetailViewConstraints()
+            self.beerDetailView.update(withImageURL: self.viewModel.imageURL,
+                                       withName: self.viewModel.name,
+                                       withDescription: self.viewModel.description,
+                                       withTagline: self.viewModel.tagline,
+                                       withABV: self.viewModel.abv,
+                                       withIBU: self.viewModel.ibu,
+                                       withEBC: self.viewModel.ebc,
+                                       withBrewSheet: self.viewModel.ingredients,
+                                       withFoods: self.viewModel.foods,
+                                       andTips: self.viewModel.tips)
+        }
+    }
+}
+
+extension BeerDetailViewController: ViewSetupable {
+    
+    func setup() {
+        view.backgroundColor = .white
+        title = "Punk"
+        
+        view.addSubview(loadingView)
+    }
+    
+    func setupConstraints() {
+        setupLoadingViewConstraints()
+    }
+    
+    private func setupLoadingViewConstraints() {
+        loadingView.translatesAutoresizingMaskIntoConstraints = false
+        NSLayoutConstraint.activate([
+            loadingView.topAnchor.constraint(equalTo: view.safeAreaLayoutGuide.topAnchor),
+            loadingView.leadingAnchor.constraint(equalTo: view.leadingAnchor),
+            loadingView.trailingAnchor.constraint(equalTo: view.trailingAnchor),
+            loadingView.bottomAnchor.constraint(equalTo: view.safeAreaLayoutGuide.bottomAnchor)
+        ])
+    }
+    
+    private func setupErrorViewConstraints() {
+        errorView.translatesAutoresizingMaskIntoConstraints = false
+        NSLayoutConstraint.activate([
+            errorView.topAnchor.constraint(equalTo: view.safeAreaLayoutGuide.topAnchor),
+            errorView.leadingAnchor.constraint(equalTo: view.leadingAnchor),
+            errorView.trailingAnchor.constraint(equalTo: view.trailingAnchor),
+            errorView.bottomAnchor.constraint(equalTo: view.safeAreaLayoutGuide.bottomAnchor)
+        ])
     }
     
     private func setupBeerDetailViewConstraints() {
@@ -57,26 +124,5 @@ class BeerDetailViewController: UIViewController {
             beerDetailView.trailingAnchor.constraint(equalTo: view.trailingAnchor),
             beerDetailView.bottomAnchor.constraint(equalTo: view.safeAreaLayoutGuide.bottomAnchor)
         ])
-    }
-    
-    private func showBeerDetailView() {
-        DispatchQueue.main.async { [weak self] in
-            guard let self = self else { return }
-            self.view.removeAllSubviews()
-            self.view.addSubview(self.beerDetailView)
-            self.setupBeerDetailViewConstraints()
-            self.beerDetailView.updateView(withName: self.viewModel.name,
-                                           withTagline: self.viewModel.tagline,
-                                           withImagePath: self.viewModel.imagePath ?? "",
-                                           withDescription: self.viewModel.description)
-        }
-    }
-    
-    private func showErrorView() {
-        DispatchQueue.main.async { [weak self] in
-            guard let self = self else { return }
-            self.view.removeAllSubviews()
-            
-        }
     }
 }
