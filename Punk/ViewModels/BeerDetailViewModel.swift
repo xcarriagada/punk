@@ -77,9 +77,9 @@ class BeerDetailViewModel {
     }
     
     func fetchData() {
-        service.urlString += "/\(beerId)"
-        service.get(withParams: nil,
-                    onSuccess: { [weak self] model in
+        service.searchBeer(forId: "\(beerId)",
+                           withParams: nil,
+                           onSuccess: { [weak self] model in
             guard let self = self else { return }
             self.beer = model.first
         }, onError: { [weak self] in

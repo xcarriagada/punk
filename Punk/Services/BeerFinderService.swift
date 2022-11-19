@@ -7,8 +7,15 @@
 
 import Foundation
 
-class BeerFinderService: RestClientService {
-    typealias T = [Beer]
+class BeerFinderService: RestClientService<[Beer]> {
     
-    var urlString: String = Endpoints.basePath + Endpoints.beerFinder
+    func searchBeer(withParams params: [String: String]?, onSuccess: @escaping ([Beer]) -> Void, onError: @escaping () -> Void) {
+        urlString = Endpoints.basePath + Endpoints.beerFinder
+        super.get(withParams: params, onSuccess: onSuccess, onError: onError)
+    }
+    
+    func searchBeer(forId id: String, withParams params: [String: String]?, onSuccess: @escaping ([Beer]) -> Void, onError: @escaping () -> Void) {
+        urlString = Endpoints.basePath + Endpoints.beerFinder + "/\(id)"
+        super.get(withParams: params, onSuccess: onSuccess, onError: onError)
+    }
 }

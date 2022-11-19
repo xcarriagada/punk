@@ -23,21 +23,19 @@ class BeerFinderViewModel {
     
     var fetchDataIsFinished: (() -> Void)?
     var noResultFound: (() -> Void)?
-    var showError: (() -> Void)?
     
     init(withService service: BeerFinderService = BeerFinderService()) {
         self.service = service
     }
     
     func searchBeerFor(food: String) {
-        service.get(withParams: ["food": food.replacingOccurrences(of: " ", with: "_")],
+        service.searchBeer(withParams: ["food": food.replacingOccurrences(of: " ", with: "_")],
                     onSuccess: { [weak self] model in
             guard let self = self else { return }
             self.beers = model
         }, onError: { [weak self] in
             guard let self = self else { return }
             self.beers = nil
-            self.showError?()
         })
     }
     

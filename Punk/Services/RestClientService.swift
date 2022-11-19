@@ -8,15 +8,24 @@
 import Foundation
 import Alamofire
 
-protocol RestClientService {
-    associatedtype T: Decodable
-    var urlString: String { get set }
-    func add(params: [String: String]?, toURLString urlString: String) -> String
-    func get(withParams params: [String: String]?, onSuccess: @escaping (T) -> Void, onError: @escaping () -> Void)
-}
-
-extension RestClientService {
-    func add(params: [String: String]?, toURLString urlString: String) -> String {
+class RestClientService<Element: Decodable> {
+    
+    var urlString: String = ""
+    
+    func get(withParams params: [String: String]?, onSuccess: @escaping (Element) -> Void, onError: @escaping () -> Void) {
+        AF.request(add(params: params, toURLString: urlString))
+            .validate()
+            .responseDecodable(of: Element.self) { response in
+                switch response.result {
+                case .success(let model):
+                    onSuccess(model)
+                case .failure(_ ):
+                    onError()
+                }
+            }
+    }
+    
+    private func add(params: [String: String]?, toURLString urlString: String) -> String {
         var _params = ""
         var newURLString: String = urlString
         guard let params = params else { return newURLString }
@@ -31,18 +40,5 @@ extension RestClientService {
         }
         
         return newURLString
-    }
-    
-    func get(withParams params: [String: String]?, onSuccess: @escaping (T) -> Void, onError: @escaping () -> Void) {
-        AF.request(add(params: params, toURLString: urlString))
-            .validate()
-            .responseDecodable(of: T.self) { response in
-                switch response.result {
-                case .success(let model): 
-                    onSuccess(model)
-                case .failure(_ ):
-                    onError()
-                }
-            }
     }
 }

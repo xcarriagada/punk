@@ -42,11 +42,6 @@ class BeerFinderViewController: UIViewController {
             self.tableView.reloadData()
         }
         
-        viewModel.showError = { [weak self] in
-            guard let self = self else { return }
-            self.tableView.reloadData()
-        }
-        
         setup()
         setupConstraints()
     }
