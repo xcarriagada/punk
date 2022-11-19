@@ -55,7 +55,7 @@ class BeerDetailViewModel {
         service.get(withParams: nil,
                     onSuccess: { [weak self] model in
             guard let self = self else { return }
-            self.beer = model.beers?.first
+            self.beer = model.first
         }, onError: { [weak self] in
             guard let self = self else { return }
             self.showError?()

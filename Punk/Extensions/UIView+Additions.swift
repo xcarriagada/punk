@@ -10,6 +10,12 @@ import UIKit
 
 extension UIView {
     
+    func removeAllSubviews() {
+        subviews.forEach({ view in
+            view.removeFromSuperview()
+        })
+    }
+    
     func applyGradient(isVertical: Bool, colorArray: [UIColor]) {
         layer.sublayers?.filter({ $0 is CAGradientLayer }).forEach({ $0.removeFromSuperlayer() })
         

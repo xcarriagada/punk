@@ -8,6 +8,11 @@
 import UIKit
 
 class ViewController: UIViewController {
+    
+    lazy var contentView: UIView = {
+        let view: UIView = UIView()
+        return view
+    }()
 
     override func viewDidLoad() {
         super.viewDidLoad()

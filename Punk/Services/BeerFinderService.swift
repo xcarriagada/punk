@@ -8,7 +8,7 @@
 import Foundation
 
 class BeerFinderService: RestClientService {
-    typealias T = BeerList
+    typealias T = [Beer]
     
     var urlString: String = Endpoints.basePath + Endpoints.beerFinder
 }

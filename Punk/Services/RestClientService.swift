@@ -37,17 +37,10 @@ extension RestClientService {
         AF.request(add(params: params, toURLString: urlString))
             .validate()
             .responseDecodable(of: T.self) { response in
-                guard let statusCode = response.response?.statusCode else {
-                    onError()
-                    return
-                }
-                if statusCode == 200 {
-                    guard let model = response.value else {
-                        onError()
-                        return
-                    }
+                switch response.result {
+                case .success(let model): 
                     onSuccess(model)
-                } else {
+                case .failure(_ ):
                     onError()
                 }
             }

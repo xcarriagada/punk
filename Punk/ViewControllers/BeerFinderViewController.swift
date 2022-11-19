@@ -9,21 +9,44 @@ import UIKit
 
 class BeerFinderViewController: UIViewController {
     
+    var viewModel: BeerFinderViewModel
+    
     lazy var searchBar: UISearchBar = {
         let searchBar = UISearchBar()
         searchBar.searchBarStyle = .default
+        searchBar.placeholder = "Try `chicken`"
         return searchBar
     }()
     
-    lazy var scrollView: UIScrollView = UIScrollView()
-    lazy var contentView: UIView = UIView()
+    lazy var tableView: UITableView = UITableView()
     
-    //TODO: Vista con resultados
-    //TODO: Vista sin resultados
-    //TODO: Vista con error
-
+    init(withViewModel viewModel: BeerFinderViewModel) {
+        self.viewModel = viewModel
+        super.init(nibName: nil, bundle: nil)
+    }
+    
+    required init?(coder: NSCoder) {
+        fatalError("init(coder:) has not been implemented")
+    }
+    
     override func viewDidLoad() {
         super.viewDidLoad()
+        
+        viewModel.fetchDataIsFinished = { [weak self] in
+            guard let self = self else { return }
+            self.tableView.reloadData()
+        }
+        
+        viewModel.noResultFound = { [weak self] in
+            guard let self = self else { return }
+            self.tableView.reloadData()
+            //TODO: Mostrar pantalla de no hay resultados para la busqueda
+        }
+        
+        viewModel.showError = { [weak self] in
+            guard let self = self else { return }
+            //TODO: Mostrar pantalla de error
+        }
 
         setupView()
         setupConstraints()
@@ -31,17 +54,19 @@ class BeerFinderViewController: UIViewController {
     
     private func setupView() {
         view.backgroundColor = .white
-        title = "Punk"
         
         view.addSubview(searchBar)
-        view.addSubview(scrollView)
-        scrollView.addSubview(contentView)
+        view.addSubview(tableView)
+        
+        searchBar.delegate = self
+        
+        tableView.delegate = self
+        tableView.dataSource = self
     }
     
     private func setupConstraints() {
         setupSearchBarConstraints()
-        setupScrollViewConstraints()
-        setupContentViewConstraints()
+        setupTableViewConstraints()
     }
     
     private func setupSearchBarConstraints() {
@@ -53,24 +78,52 @@ class BeerFinderViewController: UIViewController {
         ])
     }
     
-    private func setupScrollViewConstraints() {
-        scrollView.translatesAutoresizingMaskIntoConstraints = false
+    private func setupTableViewConstraints() {
+        tableView.translatesAutoresizingMaskIntoConstraints = false
         NSLayoutConstraint.activate([
-            scrollView.topAnchor.constraint(equalTo: searchBar.bottomAnchor),
-            scrollView.leadingAnchor.constraint(equalTo: view.leadingAnchor),
-            scrollView.trailingAnchor.constraint(equalTo: view.trailingAnchor),
-            scrollView.bottomAnchor.constraint(equalTo: view.safeAreaLayoutGuide.bottomAnchor)
+            tableView.topAnchor.constraint(equalTo: searchBar.bottomAnchor),
+            tableView.leadingAnchor.constraint(equalTo: view.leadingAnchor),
+            tableView.trailingAnchor.constraint(equalTo: view.trailingAnchor),
+            tableView.bottomAnchor.constraint(equalTo: view.safeAreaLayoutGuide.bottomAnchor)
         ])
     }
+}
+
+extension BeerFinderViewController: UISearchBarDelegate {
     
-    private func setupContentViewConstraints() {
-        contentView.translatesAutoresizingMaskIntoConstraints = false
-        NSLayoutConstraint.activate([
-            contentView.topAnchor.constraint(equalTo: scrollView.topAnchor),
-            contentView.leadingAnchor.constraint(equalTo: scrollView.leadingAnchor),
-            contentView.trailingAnchor.constraint(equalTo: scrollView.trailingAnchor),
-            contentView.bottomAnchor.constraint(equalTo: scrollView.bottomAnchor),
-            contentView.widthAnchor.constraint(equalToConstant: UIScreen.main.bounds.width)
-        ])
+    func searchBar(_ searchBar: UISearchBar, textDidChange searchText: String) {
+        guard !searchText.isEmpty else { return }
+        viewModel.searchBeerFor(food: searchText)
+    }
+}
+
+extension BeerFinderViewController: UITableViewDelegate, UITableViewDataSource {
+    
+    func tableView(_ tableView: UITableView, numberOfRowsInSection section: Int) -> Int {
+        return viewModel.beers?.count ?? 0
+    }
+    
+    func tableView(_ tableView: UITableView, cellForRowAt indexPath: IndexPath) -> UITableViewCell {
+        let cell = UITableViewCell(style: .subtitle, reuseIdentifier: "")
+        
+        if let url = URL(string: viewModel.getImagePathForBeer(withIndex: indexPath.row)) {
+            cell.imageView?.contentMode = .scaleAspectFit
+            cell.imageView?.downloaded(fromURL: url)
+        }
+        
+        if let name = viewModel.getNameForBeer(withIndex: indexPath.row), !name.isEmpty {
+            cell.textLabel?.text = name
+        }
+        
+        if let tagline = viewModel.getTaglineForBeer(withIndex: indexPath.row), !tagline.isEmpty {
+            cell.detailTextLabel?.text = tagline
+        }
+        
+        return cell
+    }
+    
+    func tableView(_ tableView: UITableView, didSelectRowAt indexPath: IndexPath) {
+        guard let id = viewModel.getIdForBeer(withIndex: indexPath.row) else { return }
+        navigationController?.pushViewController(BeerDetailViewController(withViewModel: BeerDetailViewModel(withBeerId: id)), animated: true)
     }
 }

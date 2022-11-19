@@ -33,10 +33,26 @@ class BeerFinderViewModel {
         service.get(withParams: ["food": food.replacingOccurrences(of: " ", with: "_")],
                     onSuccess: { [weak self] model in
             guard let self = self else { return }
-            self.beers = model.beers
+            self.beers = model
         }, onError: { [weak self] in
             guard let self = self else { return }
             self.showError?()
         })
+    }
+    
+    func getIdForBeer(withIndex index: Int) -> Int? {
+        return beers?[index].id
+    }
+    
+    func getImagePathForBeer(withIndex index: Int) -> String {
+        return beers?[index].image ?? ""
+    }
+    
+    func getNameForBeer(withIndex index: Int) -> String? {
+        return beers?[index].name
+    }
+    
+    func getTaglineForBeer(withIndex index: Int) -> String? {
+        return beers?[index].tagline
     }
 }
